@@ -123,7 +123,10 @@ export async function run(): Promise<void> {
     })
   }))
 
-  const chunkedPromises = chunk(downloadPromises, PARALLEL_DOWNLOADS)
+  const chunkedPromises = chunk(
+    downloadPromises,
+    inputs.mergeMultiple ? 1 : PARALLEL_DOWNLOADS
+  )
   for (const chunk of chunkedPromises) {
     const chunkPromises = chunk.map(item => item.promise)
     const results = await Promise.all(chunkPromises)
